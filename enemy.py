@@ -19,7 +19,7 @@ class Enemy(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = random.randint(30, WIDTH-30), 0
         self.vy = +3
-        self.bound = random.randint(200, HEIGHT-150)  # 停止位置
+        self.bound = random.randint(200, HEIGHT-120)  # 停止位置
         
 
     def update(self):
@@ -30,5 +30,4 @@ class Enemy(pg.sprite.Sprite):
         """
         if self.rect.centery > self.bound:
             self.vy = 0
-            self.state = "stop"
         self.rect.centery += self.vy
