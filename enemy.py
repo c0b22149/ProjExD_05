@@ -10,8 +10,7 @@ class Enemy(pg.sprite.Sprite):
     """
     敵機に関するクラス
     """
-    
-    def __init__(self, level="white"):
+    def __init__(self, level: str ="white"):
         super().__init__()
         self.level = level if level in level_lst else "white"
         self.loaded_image = pg.image.load(f"ex05/images/enemy_{self.level}.gif")
@@ -19,7 +18,9 @@ class Enemy(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = random.randint(30, WIDTH-30), 0
         self.vy = +3
-        self.bound = random.randint(200, HEIGHT-120)  # 停止位置
+        self.bound = random.randint(250, HEIGHT-230)  # 停止位置
+        self.state = "down"
+        self.is_beam = False
         
 
     def update(self):
@@ -30,4 +31,5 @@ class Enemy(pg.sprite.Sprite):
         """
         if self.rect.centery > self.bound:
             self.vy = 0
+            self.state = "stop"
         self.rect.centery += self.vy
