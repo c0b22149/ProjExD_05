@@ -22,6 +22,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+                
         #スコアを増加
         if score < 9999999 and tmr % 400 == 0:
             score += 1
