@@ -26,7 +26,7 @@ def main():
         #screen.blit(img_bg,[0,bg_y - 600])
         #screen.blit(img_bg,[0,bg_y])
 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.RIGHT:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.RIGHT: #プログラム終了
             return
 
         pygame.display.update()
