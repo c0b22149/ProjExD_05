@@ -73,6 +73,8 @@ def main():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                         # キーが押されたら，かつキーの種類がスペースキーだったら
                         beams.append(Beam(main_ch))
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT: #プログラム終了
+                return
 
         # 敵が停止している and 180フレームに1回ビームを発射
         for emy in emys:
@@ -98,8 +100,6 @@ def main():
         emy_beams.update()
         emy_beams.draw(screen)
         
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT: #プログラム終了
-            return
         tmr += 1
         
         # screen.blit(img_main, main_rect)
