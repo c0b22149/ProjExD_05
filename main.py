@@ -2,6 +2,7 @@ import pygame
 import sys
 from enemy import Enemy
 from enemy_beam import Enemy_Beam
+from endgame import Game_over
 
 img_bg = pygame.image.load("ex05/images/bg.jpg")
 
@@ -9,6 +10,7 @@ bg_y = 0
 
 HEIGHT = 600
 WIDTH = 800
+RIGHT = 3
 
 def main():
     global bg_y
@@ -19,6 +21,7 @@ def main():
     clock = pygame.time.Clock()
     emys = pygame.sprite.Group()
     emy_beams = pygame.sprite.Group()
+    game_over=Game_over()
 
     # 敵機生成
     emys.add(Enemy("white") for _ in range(10))
@@ -56,10 +59,14 @@ def main():
         emys.draw(screen)
         emy_beams.update()
         emy_beams.draw(screen)
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT: #プログラム終了
+            return
 
         pygame.display.update()
+        game_over.update(screen)
         clock.tick(120)
         tmr += 1
         
 if __name__ == "__main__":
+    
     main()
