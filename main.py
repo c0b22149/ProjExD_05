@@ -6,12 +6,13 @@ from enemy_beam import Enemy_Beam
 img_bg = pygame.image.load("ex05/images/bg.jpg")
 
 bg_y = 0
+score = 0
 
 HEIGHT = 600
 WIDTH = 800
 
 def main():
-    global bg_y
+    global bg_y,score
 
     pygame.init()
     pygame.display.set_caption("Fighter Jet!")
@@ -51,6 +52,11 @@ def main():
         bg_y = (bg_y + 1) % 600
         screen.blit(img_bg,[0,bg_y - 600])
         screen.blit(img_bg,[0,bg_y])
+        
+        #scoreの表示
+        font_score = pygame.font.Font(None,36)
+        text_score = font_score.render(f"Score:{score}",True,(255,255,255))
+        screen.blit(text_score,(10,10))
 
         emys.update()
         emys.draw(screen)
@@ -58,6 +64,7 @@ def main():
         emy_beams.draw(screen)
 
         pygame.display.update()
+        tmr += 1
         clock.tick(120)
         tmr += 1
         
