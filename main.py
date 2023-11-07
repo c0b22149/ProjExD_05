@@ -51,15 +51,15 @@ def main():
         bg_y = (bg_y + 1) % 600
         screen.blit(img_bg,[0,bg_y - 600])
         screen.blit(img_bg,[0,bg_y])
-        print(tmr)
 
         emys.update()
         emys.draw(screen)
         emy_beams.update()
         emy_beams.draw(screen)
+
         pygame.display.update()
+        clock.tick(120)
         tmr += 1
-        clock.tick(600)
         
 if __name__ == "__main__":
     main()
