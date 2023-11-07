@@ -5,6 +5,7 @@ from enemy_beam import Enemy_Beam
 from endgame import Game_over
 from main_character import *
 from beam import Beam
+import random
 
 """
 imageフォルダーからの読み込み
@@ -28,6 +29,12 @@ bg_y = 0
 score = 0
 mainch_y = 0
 
+HEIGHT = 600
+WIDTH = 800
+#
+last_score_update_time = 0
+RIGHT = 3
+
 """
 タイトルボタン
 """
@@ -38,9 +45,6 @@ text_color = (0, 0, 0)
 button_color = (111, 131, 255)
 button_hover_color = (25, 93, 174)
 
-HEIGHT = 600
-WIDTH = 800
-RIGHT = 3
 
 def draw_button(screen, button_rect, button_text, button_color):
     """
@@ -54,9 +58,7 @@ def draw_button(screen, button_rect, button_text, button_color):
     screen.blit(text, text_rect)
 
 def main():
-    global bg_y,score
-    global game_started
-    global game_ov
+    global bg_y,score,last_score_update_time,game_started,game_ov
 
     pygame.init()
     pygame.display.set_caption("Fighter Jet!")
@@ -79,6 +81,8 @@ def main():
 
 
     while True:
+        #
+        current_time = pygame.time.get_ticks()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -120,9 +124,34 @@ def main():
 
         # 敵が停止している and 180フレームに1回ビームを発射
         for emy in emys:
-            if emy.state == "stop" and tmr % 180 == 0:
-                emy_beams.add(Enemy_Beam(emy))
+            if emy.state == "stop" and tmr % 300 == 0: 
+                 emy_beams.add(Enemy_Beam(emy))
+        if game_started:
+            # 敵機生成
+            game_started=False
+            game_ov=True
+            if emys.sprites() == []:
+                cho = random.choice(["white", "green", "red"])
+                emys.add(Enemy(cho) for _ in range(10))
 
+        # メインキャラと敵ビームの衝突判定  
+        if pygame.sprite.spritecollide(main_ch, emy_beams, False):
+            # ゲームオーバー処理
+            pygame.quit()
+            sys.exit()
+    
+        # メインキャラと敵の衝突判定 
+        for bem in beams:
+            hit_to_emy = pygame.sprite.spritecollide(bem, emys, False)
+            if hit_to_emy:
+                level = hit_to_emy[0].get_level()
+                if level == "white":
+                    score += 1
+                elif level == "green":
+                    score += 10
+                elif level == "red":
+                    score += 20
+                hit_to_emy[0].kill()
 
         screen.blit(img_main, (360, 520))
         key_lst = pygame.key.get_pressed()
@@ -132,39 +161,38 @@ def main():
         screen.blit(img_bg,[0,bg_y - 600])
         screen.blit(img_bg,[0,bg_y])
 
+        #red
+        if current_time - last_score_update_time >=1000:
+            score += 1
+            last_score_update_time = current_time
+
+        
         #scoreの表示
         font_score = pygame.font.Font(None,36)
         text_score = font_score.render(f"Score:{score}",True,(255,255,255))
         screen.blit(text_score,(10,10))
-        if game_started:
-    # 敵機生成
-            emys.add(Enemy("white") for _ in range(10))
-            game_started=False
-            game_ov=True
+
         if not game_started and not game_ov:
             screen.fill(bg_color)
             draw_button(screen, start_button_rect, "Let's Fight!!", button_color if start_button_hover else button_hover_color)
             draw_button(screen, game_over_button_rect, "Game End...", button_color if game_over_button_hover else button_hover_color)
-
         emys.update()
         emys.draw(screen)
         emy_beams.update()
         emy_beams.draw(screen)
-
+        
         tmr += 1
-
+        
         # screen.blit(img_main, main_rect)
         main_ch.update(key_lst, screen)
-        for i,j in  enumerate(beams):
-            if check_screen(j.rct) != (True, True):
+        for i,j in enumerate(beams):
+            if check_screen(j.rect) != (True, True):
                 del beams[i]
             else:
                 j.update(screen)
-
         pygame.display.update()
-        game_over.update(screen)
-        tmr += 1
-        clock.tick(120)
-        
+        clock.tick(100)
+
 if __name__ == "__main__":
     main()
+  
