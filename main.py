@@ -23,8 +23,8 @@ def main():
                 pygame.quit()
                 sys.exit()
         bg_y = (bg_y + 1) % 600
-        #screen.blit(img_bg,[0,bg_y - 600])
-        #screen.blit(img_bg,[0,bg_y])
+        screen.blit(img_bg,[0,bg_y - 600])
+        screen.blit(img_bg,[0,bg_y])
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == pygame.RIGHT: #プログラム終了
             return
