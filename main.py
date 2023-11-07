@@ -2,6 +2,7 @@ import pygame
 import sys
 from enemy import Enemy
 from enemy_beam import Enemy_Beam
+from endgame import Game_over
 from main_character import *
 from beam import Beam
 
@@ -29,6 +30,7 @@ mainch_y = 0
 
 HEIGHT = 600
 WIDTH = 800
+RIGHT = 3
 
 
 def main():
@@ -40,6 +42,7 @@ def main():
     clock = pygame.time.Clock()
     emys = pygame.sprite.Group()
     emy_beams = pygame.sprite.Group()
+    game_over=Game_over()
 
     # 敵機生成
     emys.add(Enemy("white") for _ in range(10))
@@ -94,8 +97,11 @@ def main():
         emys.draw(screen)
         emy_beams.update()
         emy_beams.draw(screen)
+        
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT: #プログラム終了
+            return
         tmr += 1
-
+        
         # screen.blit(img_main, main_rect)
         main_ch.update(key_lst, screen)
         for i,j in  enumerate(beams):
@@ -103,7 +109,9 @@ def main():
                 del beams[i]
             else:
                 j.update(screen)
+                
         pygame.display.update()
+        game_over.update(screen)
         tmr += 1
         clock.tick(120)
 
