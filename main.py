@@ -1,5 +1,6 @@
 import pygame
 import sys
+import time
 from enemy import Enemy
 from enemy_beam import Enemy_Beam
 from endgame import Game_over
@@ -31,7 +32,7 @@ mainch_y = 0
 
 HEIGHT = 600
 WIDTH = 800
-#
+
 last_score_update_time = 0
 RIGHT = 3
 
@@ -57,7 +58,6 @@ def main():
 
 
     while True:
-        #
         current_time = pygame.time.get_ticks()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -93,6 +93,9 @@ def main():
         # メインキャラと敵ビームの衝突判定  
         if pygame.sprite.spritecollide(main_ch, emy_beams, False):
             # ゲームオーバー処理
+            game_over.update(screen)
+            pygame.display.update()
+            time.sleep(2)
             pygame.quit()
             sys.exit()
     
@@ -117,7 +120,7 @@ def main():
         screen.blit(img_bg,[0,bg_y - 600])
         screen.blit(img_bg,[0,bg_y])
 
-        #
+        # スコアの時間経過で判定
         if current_time - last_score_update_time >=1000:
             score += 1
             last_score_update_time = current_time
@@ -135,7 +138,7 @@ def main():
         
         tmr += 1
         
-        # screen.blit(img_main, main_rect)
+
         main_ch.update(key_lst, screen)
         for i,j in enumerate(beams):
             if check_screen(j.rect) != (True, True):
@@ -147,4 +150,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-  
