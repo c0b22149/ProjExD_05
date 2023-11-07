@@ -5,6 +5,7 @@ from enemy_beam import Enemy_Beam
 from endgame import Game_over
 from main_character import *
 from beam import Beam
+import random
 
 """
 imageフォルダーからの読み込み
@@ -82,15 +83,31 @@ def main():
 
         # 敵が停止している and 180フレームに1回ビームを発射
         for emy in emys:
-            if emy.state == "stop" and tmr % 180 == 0:
-                emy_beams.add(Enemy_Beam(emy))
+            if emy.state == "stop" and tmr % 300 == 0: 
+                 emy_beams.add(Enemy_Beam(emy))
 
-        # メインキャラと敵ビームの衝突判定
-        hit = pygame.sprite.spritecollide(main_ch, emy_beams, False)
-        if hit:
+        if emys.sprites() == []:
+            cho = random.choice(["white", "green", "red"])
+            emys.add(Enemy(cho) for _ in range(10))
+
+        # メインキャラと敵ビームの衝突判定  
+        if pygame.sprite.spritecollide(main_ch, emy_beams, False):
             # ゲームオーバー処理
             pygame.quit()
             sys.exit()
+    
+        # メインキャラと敵の衝突判定 
+        for bem in beams:
+            hit_to_emy = pygame.sprite.spritecollide(bem, emys, False)
+            if hit_to_emy:
+                level = hit_to_emy[0].get_level()
+                if level == "white":
+                    score += 1
+                elif level == "green":
+                    score += 10
+                elif level == "red":
+                    score += 20
+                hit_to_emy[0].kill()
 
         screen.blit(img_main, (360, 520))
         key_lst = pygame.key.get_pressed()
@@ -120,13 +137,14 @@ def main():
         
         # screen.blit(img_main, main_rect)
         main_ch.update(key_lst, screen)
-        for i,j in  enumerate(beams):
+        for i,j in enumerate(beams):
             if check_screen(j.rect) != (True, True):
                 del beams[i]
             else:
-                j.update(screen,emys)
+                j.update(screen)
         pygame.display.update()
         clock.tick(100)
 
 if __name__ == "__main__":
     main()
+  

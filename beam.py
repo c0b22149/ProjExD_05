@@ -20,14 +20,14 @@ class Beam:
         # 上方向に速度を設定
         self.vx, self.vy = 0, -10
 
-    def update(self, screen: pygame.Surface, emys):
+    def update(self, screen: pygame.Surface):
         """
         ビームを速度vxに従って移動させる
         引数 screen:画面Surface
         """
         self.rect.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rect)
-        hit = pygame.sprite.spritecollide(self, emys, True)
-        if hit:
-            # 衝突した敵をemysグループから削除
-            hit[0].kill()
+        # hit = pygame.sprite.spritecollide(self, emys, True)
+        # if hit:
+        #     # 衝突した敵をemysグループから削除
+        #     hit[0].kill()

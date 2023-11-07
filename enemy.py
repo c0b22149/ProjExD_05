@@ -21,8 +21,12 @@ class Enemy(pg.sprite.Sprite):
         self.bound = random.randint(250, HEIGHT-230)  # 停止位置
         self.state = "down"
         self.is_beam = False
-        
 
+    def get_level(self):
+        """
+        敵機のレベルを返す
+        """
+        return self.level
     def update(self):
         """
         敵機を速度ベクトルself.vyに基づき移動（降下）させる
