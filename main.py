@@ -10,9 +10,11 @@ score = 0
 
 HEIGHT = 600
 WIDTH = 800
+#
+last_score_update_time = 0
 
 def main():
-    global bg_y,score
+    global bg_y,score,last_score_update_time
 
     pygame.init()
     pygame.display.set_caption("Fighter Jet!")
@@ -26,6 +28,8 @@ def main():
 
     tmr = 0
     while True:
+        #
+        current_time = pygame.time.get_ticks()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -52,6 +56,12 @@ def main():
         bg_y = (bg_y + 1) % 600
         screen.blit(img_bg,[0,bg_y - 600])
         screen.blit(img_bg,[0,bg_y])
+
+        #
+        if current_time - last_score_update_time >=1000:
+            score += 1
+            last_score_update_time = current_time
+
         
         #scoreの表示
         font_score = pygame.font.Font(None,36)
@@ -66,7 +76,6 @@ def main():
         pygame.display.update()
         tmr += 1
         clock.tick(120)
-        tmr += 1
         
 if __name__ == "__main__":
     main()
