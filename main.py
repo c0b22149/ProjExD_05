@@ -91,7 +91,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == peygame.key.key_code("e"):
+            if event.type == pygame.KEYDOWN and event.key == pygame.key.key_code("e"):
                 for emy in emys:
                     emy_beams.add(Enemy_Beam(emy))
             if event.type == pygame.KEYDOWN and event.key == pygame.key.key_code("g"):
