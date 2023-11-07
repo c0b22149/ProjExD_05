@@ -72,8 +72,6 @@ def main():
     emy_beams = pygame.sprite.Group()
     game_over=Game_over()
 
-    # 敵機生成
-    emys.add(Enemy("white") for _ in range(10))
     start_button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 125, 200, 100)
     start_button_hover = False
     game_over_button_rect= pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 25, 200, 100)
@@ -93,7 +91,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.key.key_code("e"):
+            if event.type == pygame.KEYDOWN and event.key == peygame.key.key_code("e"):
                 for emy in emys:
                     emy_beams.add(Enemy_Beam(emy))
             if event.type == pygame.KEYDOWN and event.key == pygame.key.key_code("g"):
@@ -130,16 +128,11 @@ def main():
 
         # 敵が停止している and 180フレームに1回ビームを発射
         for emy in emys:
-            if emy.state == "stop" and tmr % 300 == 0: 
+            if emy.state == "stop" and tmr % 200 == 0: 
                  emy_beams.add(Enemy_Beam(emy))
 
-        if emys.sprites() == []:
-            cho = random.choice(["white", "green", "red"])
-            emys.add(Enemy(cho) for _ in range(10))
         if game_started:
-            # 敵機生成
-            game_started=False
-            game_ov=True
+            # 敵機の生成
             if emys.sprites() == []:
                 cho = random.choice(["white", "green", "red"])
                 emys.add(Enemy(cho) for _ in range(10))
