@@ -1,4 +1,5 @@
 import pygame
+from pygame.sprite import Sprite
 
 img_main = pygame.image.load("ex05/images/main.gif")
 img_main = pygame.transform.scale(img_main, (img_main.get_width()*2, img_main.get_height()*2))
@@ -20,7 +21,7 @@ def check_screen(obj_rct: pygame.Rect):
     return width, height
 
 
-class main_character:
+class main_character(Sprite):
     """
     ゲームキャラクターに関するクラス
     """
@@ -35,8 +36,8 @@ class main_character:
         引数1 xy: メインキャラクタ画像の位置座標タプル
         """
         self.img = img_main
-        self.rct = self.img.get_rect()
-        self.rct.center = xy
+        self.rect = self.img.get_rect()
+        self.rect.center = xy
 
     def update(self, key_lst: list[bool], screen: pygame.Surface):
         """
@@ -49,7 +50,7 @@ class main_character:
             if key_lst[k]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
-        self.rct.move_ip(sum_mv)
-        if check_screen(self.rct) != (True, True):
-            self.rct.move_ip(-sum_mv[0], -sum_mv[1])
-        screen.blit(self.img, self.rct)
+        self.rect.move_ip(sum_mv)
+        if check_screen(self.rect) != (True, True):
+            self.rect.move_ip(-sum_mv[0], -sum_mv[1])
+        screen.blit(self.img, self.rect)

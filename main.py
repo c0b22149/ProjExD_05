@@ -75,6 +75,12 @@ def main():
             if emy.state == "stop" and tmr % 180 == 0:
                 emy_beams.add(Enemy_Beam(emy))
 
+        # メインキャラと敵ビームの衝突判定
+        hit = pygame.sprite.spritecollide(main_ch, emy_beams, False)
+        if hit:
+            # ゲームオーバー処理
+            pygame.quit()
+            sys.exit()
 
         screen.blit(img_main, (360, 520))
         key_lst = pygame.key.get_pressed()
@@ -93,12 +99,12 @@ def main():
         # screen.blit(img_main, main_rect)
         main_ch.update(key_lst, screen)
         for i,j in  enumerate(beams):
-            if check_screen(j.rct) != (True, True):
+            if check_screen(j.rect) != (True, True):
                 del beams[i]
             else:
-                j.update(screen)
+                j.update(screen,emys)
         pygame.display.update()
-        clock.tick(120)
+        clock.tick(100)
 
 if __name__ == "__main__":
     main()
