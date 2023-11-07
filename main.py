@@ -49,9 +49,8 @@ class main_character:
 
     def __init__(self, xy: tuple[int, int]):
         """
-        こうかとん画像Surfaceを生成する
-        引数1 num：こうかとん画像ファイル名の番号
-        引数2 xy：こうかとん画像の位置座標タプル
+        メインキャラクターの画像Surfaceを生成する
+        引数1 xy: メインキャラクタ画像の位置座標タプル
         """
         self.img = img_main
         self.rct = self.img.get_rect()
@@ -81,9 +80,16 @@ class Beam:
         """
         img = pygame.image.load("ex05/ProjExD_05/images/main_beam.png")
         self.img = pygame.transform.rotate(img, 90)
-        self.rct = ch.rct
-        self.rct.centery = ch.rct.centery
-        self.vx, self.vy = +5, -10
+
+        # メインキャラの中心座標を取得
+        center_x = ch.rct.centerx
+        center_y = ch.rct.centery
+
+        # ビームのrectの中心をメインキャラの中心に合わせる
+        self.rct = self.img.get_rect(center=(center_x, center_y))
+
+        # 上方向に速度を設定
+        self.vx, self.vy = 0, -10
 
     def update(self, screen: pygame.Surface):
         """
@@ -111,7 +117,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     # キーが押されたら，かつキーの種類がスペースキーだったら
                     beams.append(Beam(main_ch))
 
